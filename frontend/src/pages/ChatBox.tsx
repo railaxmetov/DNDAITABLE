@@ -4,7 +4,7 @@ export default function ChatBox(props: { messages: any[]; socket: any; }) {
     return (
         <div>
             {props.messages.map((message, i) => (
-                <ChatMessage key={i} socketID={props.socket.id} message={message} />
+                <ChatMessage key={i} message={message} />
             ))}
         </div>
     )

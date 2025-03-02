@@ -17,6 +17,7 @@ def profile_user():
     if current_user:
         return jsonify({
             "nickname": current_user.nickname,
+            "user_id": current_user.id,
         }), 200
     return jsonify({
         "message": "User not found"
@@ -36,6 +37,7 @@ def load_chats():
 @jwt_required()
 def create_chat():
     new_chat = Chat(user_id=get_jwt_identity())
+    new_chat.users.append(get_current_user())
     db.session.add(new_chat)
     db.session.commit()
     return jsonify({
@@ -47,5 +49,15 @@ def create_chat():
 def load_chat(chat_id):
     chat = Chat.query.filter_by(id=chat_id).first()
     return jsonify({
-        'data_messages': chat.json_data,
+        'json_data': chat.json_data,
+        'join_code': chat.join_code
+    })
+
+@profile.route('/join_chat/<join_code>', methods=["GET"], endpoint='join_chat')
+@jwt_required()
+def join_chat(join_code):
+    chat = Chat.query.filter_by(join_code=join_code).first()
+    chat.users.append(get_current_user())
+    return jsonify({
+        'chat_id': str(chat.id),
     })

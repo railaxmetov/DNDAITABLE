@@ -3,7 +3,7 @@ from blueprints.auth import auth
 from blueprints.profile import profile
 
 # Допы для дополнительной настройки jwt через декораторы
-from utils import is_token_revoked
+from utils import is_token_revoked, ChatServer
 from backend.models import User
 
 # настройка jwt
@@ -29,4 +29,5 @@ app.register_blueprint(profile)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    socketio.run(app=app, debug=True, allow_unsafe_werkzeug=True)
+        chat_server = ChatServer(app, socketio)
+    chat_server.run(debug=True, host='127.0.0.1', port=5000, allow_unsafe_werkzeug=True)

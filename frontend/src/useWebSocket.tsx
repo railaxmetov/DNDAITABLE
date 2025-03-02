@@ -16,7 +16,8 @@ export default function useWebSocket(url: string, dataHandler: any) {
             console.log('Disconnected from server')
         });
 
-        socketClient.on('data', (data: any) => {
+        socketClient.on('message', (data: any) => {
+            console.log(data)
             dataHandler(data)
         });
 

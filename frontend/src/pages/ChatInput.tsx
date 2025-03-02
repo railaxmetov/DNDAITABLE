@@ -4,7 +4,7 @@ export default function ChatInput(props: any) {
     const [message, setMessage] = useState<string>("");
 
     const sendMessage = () => {
-        props.socket.emit("data", {'message': message, 'nickname': sessionStorage.getItem("nickname")});
+        props.socket.emit("message", {'message': message, 'user_id': sessionStorage.getItem("user_id"), 'chat_id': sessionStorage.getItem("chat_id")});
         setMessage("");
     }
 

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 
 function RegisterForm() {
 
@@ -7,6 +7,8 @@ function RegisterForm() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [repeatPassword, setRepeatPassword] = useState<string>("");
+
+    const navigate = useNavigate();
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,7 +32,9 @@ function RegisterForm() {
             const error_data = await response.json()
             alert(error_data.message)
         } else {
-            // Successful
+            sessionStorage.setItem('access_token', '')
+            sessionStorage.setItem('refresh_token', '')
+            navigate('/login')
         }
     }
 

@@ -31,16 +31,3 @@ jwt = JWTManager(app)
 
 # Вебсокет
 socketio = SocketIO(app, cors_allowed_origins="*")
-
-@socketio.on('connect')
-def connect():
-    print(f'Client connected: {request.sid}')
-
-@socketio.on('data')
-def data_handler(data):
-    emit('data', {'socketID': request.sid, 'data': data}, broadcast=True)
-
-
-@socketio.on('disconnect')
-def disconnect():
-    print(f'Client disconnected: {request.sid}')
